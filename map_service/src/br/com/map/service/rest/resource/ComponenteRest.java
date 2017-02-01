@@ -1,6 +1,7 @@
 package br.com.map.service.rest.resource;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -38,14 +39,19 @@ public class ComponenteRest {
 	@GET
 	@Path("/lista")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ComponenteVO listar(){
-		ComponenteVO vo = new ComponenteVO();
-		vo.setNome("Teste Serviço!");
-		vo.setDescricao("Descrição teste");
-		vo.setTipo(1);
-		vo.setInclusao(new Date());
+	public Response listar(){
+		Response r;
+		List<ComponenteVO> componentes;
+		cModel = new ComponenteModel();
+		try{
+			componentes = ComponenteAdapter.entityListToVOList(cModel.listarTodos());
+			r = Response.status(200).entity(componentes).build();
+		}catch(Exception e){
+			r = Response.status(501).entity(e.getMessage()).build();
+			e.printStackTrace();
+		}
 		
-		return vo;
+		return r;
 	}
 	
 	@GET

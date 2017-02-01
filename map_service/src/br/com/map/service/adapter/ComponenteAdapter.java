@@ -1,5 +1,8 @@
 package br.com.map.service.adapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.map.data.entity.Componente;
 import br.com.map.service.vo.ComponenteVO;
 
@@ -26,6 +29,16 @@ public class ComponenteAdapter {
 		vo.setInclusao(c.getInclusao());
 		
 		return vo;
+	}
+	
+	public static List<ComponenteVO> entityListToVOList(List<Componente> lista){
+		List<ComponenteVO> componentesVO = new ArrayList<ComponenteVO>();
+		
+		for(Componente c : lista){
+			componentesVO.add(EntityToVO(c));
+		}
+		
+		return componentesVO;
 	}
 
 }
