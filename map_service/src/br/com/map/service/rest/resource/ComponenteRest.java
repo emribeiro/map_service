@@ -8,6 +8,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -73,6 +74,29 @@ public class ComponenteRest {
 		}
 		
 		r = Response.status(tVO.getStatus()).entity(tVO).build();
+		return r;
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response pesquisarPorId(@QueryParam("id") long id){
+		TransporteVO tVO;
+		ComponenteVO cVO;
+		Response r = null;
+		
+		cModel = new ComponenteModel();
+		
+		try{
+			cVO = ComponenteAdapter.EntityToVO(cModel.pesquisarPorId(id));
+			r = Response.status(200).entity(cVO).build();
+		}catch(Exception e){
+			tVO = new TransporteVO();
+			tVO.setStatus(501);
+			tVO.setMensagem(e.getMessage());
+			
+			r = Response.status(tVO.getStatus()).entity(tVO).build();
+		}
+		
 		return r;
 	}
 }
