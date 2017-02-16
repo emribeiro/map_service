@@ -3,6 +3,7 @@ package br.com.map.service.rest.resource;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -96,6 +97,32 @@ public class ComponenteRest {
 			
 			r = Response.status(tVO.getStatus()).entity(tVO).build();
 		}
+		
+		return r;
+	}
+	
+	
+	@DELETE
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response excluir(@QueryParam("id") long id){
+		TransporteVO tVO = new TransporteVO();
+		ComponenteVO cVO = new ComponenteVO();
+		cVO.setId(id);
+		
+		Response r = null;
+		
+		cModel = new ComponenteModel();
+		
+		try{
+			cModel.excluir(ComponenteAdapter.VOToEntity(cVO));
+			tVO.setStatus(201);
+			tVO.setMensagem("Componente Excluído com sucesso");
+		}catch(Exception e){
+			tVO.setStatus(501);
+			tVO.setMensagem(e.getMessage());
+		}
+		
+		r = Response.status(tVO.getStatus()).entity(tVO).build();
 		
 		return r;
 	}
